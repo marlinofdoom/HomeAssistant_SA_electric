@@ -1,6 +1,6 @@
-"""Constants for the Sensus Analytics Integration (Natural Gas)."""
+"""Constants for the Sensus Analytics Integration (Electric)."""
 
-DOMAIN = "sensus_analytics"
+DOMAIN = "sensus_analytics_electric"
 
 CONF_BASE_URL = "base_url"
 CONF_USERNAME = "username"

@@ -1,5 +1,5 @@
 {
   "name": "Sensus Analytics Integration (Electric)",
   "content_in_root": false,
-  "filename": "custom_components/sensus_analytics/manifest.json"
+  "filename": "custom_components/sensus_analytics_electric/manifest.json"
 }
