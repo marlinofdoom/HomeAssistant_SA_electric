@@ -144,7 +144,7 @@ class SensusAnalyticsOptionsFlow(config_entries.OptionsFlow):
                 ): cv.positive_float,
                 vol.Optional(
                     "electric_solar_credit_price",
-                    default=current_data.get("electric_solar_credit_price", -0.085000),
+                    default=current_data.get("electric_solar_credit_price", 0.085000),
                 ): cv.positive_float,
                 vol.Required(
                     "electric_service_fee",
