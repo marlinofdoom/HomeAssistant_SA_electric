@@ -320,7 +320,7 @@ class SensusAnalyticsBillingCostSensor(StaticUnitSensorBase):
     def _calculate_electric_cost(self, usage_electric):
         """Calculate the billing cost based on tiers and service fee."""
         electric_commodity_price = self.coordinator.config_entry.data.get("electric_commodity_price")
-        electric_solar_credit_price = self.coordinator.config_entry.data.get("electric_solar_credit_price") or 0
+        # electric_solar_credit_price = self.coordinator.config_entry.data.get("electric_solar_credit_price") or 0
         electric_service_fee = self.coordinator.config_entry.data.get("electric_service_fee")
 
         cost = electric_service_fee
@@ -351,11 +351,8 @@ class SensusAnalyticsDailyFeeSensor(StaticUnitSensorBase):
     def _calculate_daily_electric_fee(self, usage_electric):
         """Calculate the daily fee."""
         electric_commodity_price = self.coordinator.config_entry.data.get("electric_commodity_price")
-        electric_solar_credit_price = self.coordinator.config_entry.data.get("electric_solar_credit_price") or 0
-
-        cost = 0
-        if usage_electric is not None:
-            cost += usage_electric * (electric_commodity_price)
+        # electric is not None:
+        cost += usage_electric * (electric_commodity_price)
         return round(cost, 2)
 
 
