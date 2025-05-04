@@ -1,0 +1,45 @@
+{
+  "title": "Sensus Analytics (Electric)",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configure Sensus Analytics",
+        "data": {
+          "base_url": "Base URL",
+          "username": "Username",
+          "password": "Password",
+          "account_number": "Account Number",
+          "electric_meter_number": "Electric Meter Number",
+          "electric_unit_type": "Unit Type (kWh)",
+          "electric_commodity_price": "Electric Commodity Price (from utility)",
+          "electric_solar_credit_price": "Solar Credit (Wholesale) Electric Price",
+          "electric_service_fee": "Service Fee"
+        }
+      }
+    },
+    "error": {
+      "auth": "Authentication failed"
+    },
+    "abort": {
+      "already_configured": "This account is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Update Sensus Analytics Configuration",
+        "data": {
+          "base_url": "Base URL",
+          "username": "Username",
+          "password": "Password",
+          "account_number": "Account Number",
+          "electric_meter_number": "Electric Meter Number",
+          "electric_unit_type": "Unit Type (kWh)",
+          "electric_commodity_price": "Electric Commodity Price (from utility)",
+          "electric_solar_credit_price": "Solar Credit (Wholesale) Electric Price",
+          "electric_service_fee": "Service Fee"
+        }
+      }
+    }
+  }
+}

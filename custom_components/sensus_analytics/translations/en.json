@@ -1,0 +1,125 @@
+{
+  "title": "Sensus Analytics",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configure Sensus Analytics",
+        "data": {
+          "base_url": "Base URL",
+          "base_url_description": "Enter the base URL for the Sensus Analytics API (e.g., https://api.sensus.com).",
+          "username": "Username",
+          "username_description": "Enter your Sensus Analytics username.",
+          "password": "Password",
+          "password_description": "Enter your Sensus Analytics password.",
+          "account_number": "Account Number",
+          "account_number_description": "Enter your Sensus Analytics account (customer) number.",
+          "electric_meter_number": "Electric Meter Number",
+          "electric_meter_number_description": "Enter your Sensus Analytics electric meter number.",
+          "electric_unit_type": "Unit Type (kWh)",
+          "electric_unit_type_description": "Select the unit type. 'kWh' stands for kilowatt hours.",
+          "electric_commodity_price": "Electric Commodity Price (from utility)",
+          "electric_commodity_price_description": "Enter the price per kWh for electricity (e.g., 0.1413).",
+          "electric_solar_credit_price": "Solar Credit (Wholesale) Electric Price",
+          "electric_solar_credit_price_description": "Enter the price per kWh for solar electric returned to grid (e.g., -0.0872). Leave blank if not applicable.",
+          "electric_service_fee": "Service Fee",
+          "electric_service_fee_description": "Enter the fixed electric service fee amount (e.g., 12.60)."
+        }
+      },
+      "init": {
+        "title": "Configure Sensus Analytics Options",
+        "data": {
+          "base_url": "Base URL",
+          "base_url_description": "Enter the base URL for the Sensus Analytics API (e.g., https://api.sensus.com).",
+          "username": "Username",
+          "username_description": "Enter your Sensus Analytics username.",
+          "password": "Password",
+          "password_description": "Enter your Sensus Analytics password.",
+          "account_number": "Account Number",
+          "account_number_description": "Enter your Sensus Analytics account (customer) number.",
+          "electric_meter_number": "Electric Meter Number",
+          "electric_meter_number_description": "Enter your Sensus Analytics electric meter number.",
+          "electric_unit_type": "Unit Type (kWh)",
+          "electric_unit_type_description": "Select the unit type. 'kWh' stands for kilowatt hours.",
+          "electric_commodity_price": "Electric Commodity Price (from utility)",
+          "electric_commodity_price_description": "Enter the price per kWh for electricity (e.g., 0.1413).",
+          "electric_solar_credit_price": "Solar Credit (Wholesale) Electric Price",
+          "electric_solar_credit_price_description": "Enter the price per kWh for solar electric returned to grid (e.g., -0.0872). Leave blank if not applicable.",
+          "electric_service_fee": "Service Fee",
+          "electric_service_fee_description": "Enter the fixed electric service fee amount (e.g., 12.60)."
+        }
+      }
+    },
+    "error": {
+      "auth": "Authentication failed"
+    },
+    "abort": {
+      "already_configured": "This account is already configured."
+    }
+  },
+  "sensor": {
+    "sensus_analytics_meter_address": {
+      "name": "Meter Address",
+      "description": "Street address of the utility meter."
+    },
+    "sensus_analytics_last_read": {
+      "name": "Last Read",
+      "description": "Timestamp of the last meter reading."
+    },
+    "sensus_analytics_meter_latitude": {
+      "name": "Meter Latitude",
+      "description": "Latitude coordinate of the meter's location."
+    },
+    "sensus_analytics_meter_longitude": {
+      "name": "Meter Longitude",
+      "description": "Longitude coordinate of the meter's location."
+    },
+    "sensus_analytics_last_hour_temperature": {
+      "name": "Last Hour Temperature",
+      "description": "Temperature for the last hour."
+    },
+    "sensus_analytics_last_hour_timestamp": {
+      "name": "Last Hour Timestamp",
+      "description": "Timestamp of the last hour's data from the previous day."
+    },
+    "sensus_analytics_electric_daily_usage": {
+      "name": "Electric Daily Usage",
+      "description": "Daily electric usage."
+    },
+    "sensus_analytics_electric_usage_unit": {
+      "name": "Electric Usage Unit",
+      "description": "Electric native unit of measurement chosen by Sensus Analytics."
+    },
+    "sensus_analytics_electric_meter_id": {
+      "name": "Electric Meter ID",
+      "description": "Unique identifier for the electric meter."
+    },
+    "sensus_analytics_electric_latest_read_usage": {
+      "name": "Latest Read Electric Usage",
+      "description": "Latest cumulative electric usage recorded by the meter."
+    },
+    "sensus_analytics_electric_billing_usage": {
+      "name": "Billing Electric Usage",
+      "description": "Total electric usage amount that has been billed."
+    },
+    "sensus_analytics_electric_billing_cost": {
+      "name": "Electric Billing Cost",
+      "description": "Total cost of the billed electric usage."
+    },
+    "sensus_analytics_electric_daily_fee": {
+      "name": "Electric Daily Fee",
+      "description": "Daily fee based on electric usage."
+    },
+    "sensus_analytics_electric_last_hour_usage": {
+      "name": "Last Hour Electric Usage",
+      "description": "Electric usage for the last hour."
+    },
+    "sensus_analytics_electric_meter_odometer": {
+      "name": "Electric Meter Odometer",
+      "description": "Total cumulative electric usage recorded by the meter."
+    },
+    "sensus_analytics_electric_hourly_timestamp": {
+      "name": "Electric Hourly Timestamp",
+      "description": "Timestamp of the last hour's data from the previous day."
+    }
+  }
+}
