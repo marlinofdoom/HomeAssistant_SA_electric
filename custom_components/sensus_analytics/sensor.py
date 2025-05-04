@@ -350,9 +350,10 @@ class SensusAnalyticsDailyFeeSensor(StaticUnitSensorBase):
 
     def _calculate_daily_electric_fee(self, usage_electric):
         """Calculate the daily fee."""
+        cost = 0
         electric_commodity_price = self.coordinator.config_entry.data.get("electric_commodity_price")
-        # electric is not None:
-        cost += usage_electric * (electric_commodity_price)
+        if usage_electric is not None:
+            cost += usage_electric * (electric_commodity_price)
         return round(cost, 2)
 
 
