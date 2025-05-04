@@ -126,7 +126,7 @@ class SensusAnalyticsDailyUsageSensor(DynamicUnitSensorBase):
         self._attr_name = f"{DEFAULT_NAME} Daily Usage"
         self._attr_unique_id = f"{self._unique_id}_daily_usage"
         self._attr_icon = "mdi:meter-electric-outline"
-        self._attr_device_class = SensorDeviceClass.ELECTRIC
+        self._attr_device_class = SensorDeviceClass.ENERGY
         self._attr_state_class = SensorStateClass.TOTAL
 
     @property
@@ -257,7 +257,7 @@ class MeterOdometerSensor(DynamicUnitSensorBase):
         self._attr_name = f"{DEFAULT_NAME} Meter Odometer"
         self._attr_unique_id = f"{self._unique_id}_meter_odometer"
         self._attr_icon = "mdi:meter-electric-outline"
-        self._attr_device_class = SensorDeviceClass.ELECTRIC
+        self._attr_device_class = SensorDeviceClass.ENERGY
         self._attr_state_class = SensorStateClass.TOTAL_INCREASING
 
     @property
@@ -281,7 +281,7 @@ class SensusAnalyticsBillingUsageSensor(DynamicUnitSensorBase):
         self._attr_name = f"{DEFAULT_NAME} Billing Usage"
         self._attr_unique_id = f"{self._unique_id}_billing_usage"
         self._attr_icon = "mdi:meter-electric-outline"
-        self._attr_device_class = SensorDeviceClass.ELECTRIC
+        self._attr_device_class = SensorDeviceClass.ENERGY
         self._attr_state_class = SensorStateClass.TOTAL
 
     @property
@@ -368,7 +368,7 @@ class LastHourUsageSensor(DynamicUnitSensorBase):
         self._attr_name = f"{DEFAULT_NAME} Last Hour Usage"
         self._attr_unique_id = f"{self._unique_id}_last_hour_electric_usage"
         self._attr_icon = "mdi:meter-electric-outline"
-        self._attr_device_class = SensorDeviceClass.ELECTRIC
+        self._attr_device_class = SensorDeviceClass.ENERGY
         self._attr_state_class = SensorStateClass.TOTAL
 
     @property
