@@ -1,5 +1,5 @@
 {
-  "domain": "sensus_analytics",
+  "domain": "sensus_analytics_electric",
   "name": "Sensus Analytics Integration (Electric)",
   "version": "0.1.0",
   "documentation": "https://github.com/marlinofdoom/HomeAssistant_SA_electric",
