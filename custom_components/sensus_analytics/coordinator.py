@@ -12,7 +12,7 @@ from homeassistant.util import dt as dt_util
 from .const import (
     CONF_ACCOUNT_NUMBER,
     CONF_BASE_URL,
-    CONF_GAS_METER_NUMBER,
+    CONF_ELECTRIC_METER_NUMBER,
     CONF_PASSWORD,
     CONF_USERNAME,
     DOMAIN,
@@ -31,7 +31,7 @@ class SensusAnalyticsDataUpdateCoordinator(DataUpdateCoordinator):
         self.username = config_entry.data[CONF_USERNAME]
         self.password = config_entry.data[CONF_PASSWORD]
         self.account_number = config_entry.data[CONF_ACCOUNT_NUMBER]
-        self.gas_meter_number = config_entry.data[CONF_GAS_METER_NUMBER]
+        self.electric_meter_number = config_entry.data[CONF_ELECTRIC_METER_NUMBER]
         self.config_entry = config_entry
 
         super().__init__(
@@ -53,7 +53,7 @@ class SensusAnalyticsDataUpdateCoordinator(DataUpdateCoordinator):
             session = self._create_authenticated_session()
 
             # Fetch daily data
-            data = self._fetch_daily_gas_data(session)
+            data = self._fetch_daily_electric_data(session)
 
             # Fetch hourly data
             _LOGGER.debug("Fetching hourly data")
@@ -94,16 +94,16 @@ class SensusAnalyticsDataUpdateCoordinator(DataUpdateCoordinator):
         _LOGGER.debug("Authentication successful")
         return session
 
-    def _fetch_daily_gas_data(self, session):
-        """Fetch daily gas meter data."""
-        widget_url = urljoin(self.base_url, "gas/widget/byPage")
+    def _fetch_daily_electric_data(self, session):
+        """Fetch daily electric meter data."""
+        widget_url = urljoin(self.base_url, "electric/widget/byPage")
         _LOGGER.debug("Widget URL: %s", widget_url)
         response = session.post(
             widget_url,
             json={
                 "group": "meters",
                 "accountNumber": self.account_number,
-                "deviceId": self.gas_meter_number,
+                "deviceId": self.electric_meter_number,
             },
             timeout=10,
         )
@@ -157,7 +157,7 @@ class SensusAnalyticsDataUpdateCoordinator(DataUpdateCoordinator):
 
     def _construct_hourly_data_request(self, start_ts, end_ts):
         """Construct the hourly data request URL and parameters."""
-        usage_url = urljoin(self.base_url, f"water/usage/{self.account_number}/{self.gas_meter_number}")
+        usage_url = urljoin(self.base_url, f"water/usage/{self.account_number}/{self.electric_meter_number}")
         params = {
             "start": start_ts,
             "end": end_ts,
