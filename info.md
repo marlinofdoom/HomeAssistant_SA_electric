@@ -1,4 +1,4 @@
-# Sensus Analytics Integration
+# Sensus Analytics Integration (Electric)
 
 Monitor your electric usage directly in Home Assistant via integration with Sensus Analytics.
 

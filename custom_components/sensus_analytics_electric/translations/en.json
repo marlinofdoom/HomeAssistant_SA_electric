@@ -1,9 +1,9 @@
 {
-  "title": "Sensus Analytics",
+  "title": "Sensus Analytics (Electric)",
   "config": {
     "step": {
       "user": {
-        "title": "Configure Sensus Analytics",
+        "title": "Configure Sensus Analytics (Electric)",
         "data": {
           "base_url": "Base URL",
           "base_url_description": "Enter the base URL for the Sensus Analytics API (e.g., https://api.sensus.com).",
@@ -26,7 +26,7 @@
         }
       },
       "init": {
-        "title": "Configure Sensus Analytics Options",
+        "title": "Configure Sensus Analytics (Electric) Options",
         "data": {
           "base_url": "Base URL",
           "base_url_description": "Enter the base URL for the Sensus Analytics API (e.g., https://api.sensus.com).",
