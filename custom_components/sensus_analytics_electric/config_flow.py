@@ -58,8 +58,8 @@ class SensusAnalyticsConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Required(CONF_ACCOUNT_NUMBER): str,
                 vol.Required(CONF_ELECTRIC_METER_NUMBER): str,
                 vol.Required("electric_unit_type", default="kWh"): vol.In(["kWh", "MWh"]),
-                vol.Required("electric_commodity_price", default=0.1413): cv.positive_float,
-                vol.Optional("electric_solar_credit_price", default=0.0872): cv.positive_float,
+                vol.Required("electric_commodity_price", default=0.0128): cv.positive_float,
+                vol.Optional("electric_solar_credit_price"): cv.positive_float,
                 vol.Required("electric_service_fee", default=15.00): cv.positive_float,
             }
         )
@@ -144,7 +144,7 @@ class SensusAnalyticsOptionsFlow(config_entries.OptionsFlow):
                 ): cv.positive_float,
                 vol.Optional(
                     "electric_solar_credit_price",
-                    default=current_data.get("electric_solar_credit_price", 0.0872000),
+                    default=current_data.get("electric_solar_credit_price", 0.085000),
                 ): cv.positive_float,
                 vol.Required(
                     "electric_service_fee",
