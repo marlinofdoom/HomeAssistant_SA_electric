@@ -47,12 +47,8 @@ class UsageConversionMixin:
             return None
         if usage_unit is None:
             usage_unit = self.coordinator.data.get("usageUnit")
-        # if usage_unit == "KWH":
-        #    usage_unit = "kWh"  # try to set this to the expected unit style.
-        # if usage_unit == "MWH":
-        #    usage_unit = "MWh"
 
-        config_unit_type = self.coordinator.config_entry.data.get("unit_type")
+        config_unit_type = self.coordinator.config_entry.data.get("electic_unit_type")
 
         if usage_unit == "kWh" and config_unit_type == "MWh":
             try:
@@ -103,7 +99,10 @@ class DynamicUnitSensorBase(UsageConversionMixin, CoordinatorEntity, SensorEntit
     @property
     def native_unit_of_measurement(self):
         """Return the unit of measurement."""
-        return self._get_usage_unit()
+        unit = self._get_usage_unit()
+        if unit == "KWH":
+            unit = "kWh"  # convert to the HA standard
+        return unit
 
 
 class StaticUnitSensorBase(UsageConversionMixin, CoordinatorEntity, SensorEntity):
