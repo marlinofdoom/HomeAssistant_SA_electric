@@ -47,9 +47,9 @@ class UsageConversionMixin:
             return None
         if usage_unit is None:
             usage_unit = self.coordinator.data.get("usageUnit")
-        # if usage_unit == "KWH":
+        #if usage_unit == "KWH":
         #    usage_unit = "kWh"  # try to set this to the expected unit style.
-        # if usage_unit == "MWH":
+        #if usage_unit == "MWH":
         #    usage_unit = "MWh"
 
         config_unit_type = self.coordinator.config_entry.data.get("unit_type")
@@ -65,7 +65,7 @@ class UsageConversionMixin:
             except (ValueError, TypeError):
                 return None
         elif usage_unit == "KWH" and config_unit_type == "kWh":
-            return usage
+            return usage   
         return usage
 
     def _get_usage_unit(self):
