@@ -185,7 +185,7 @@ class SensusAnalyticsDataUpdateCoordinator(DataUpdateCoordinator):
             usage_unit = "kWh"  # trying to trick this into being the correct unit.
 
         temp_unit = units[1]  # probably don't need this
-        # Note: No idea what the third entry is. It shows up as null in the web portal all the time. Maybe just units again?
+        # Note: No idea what the third entry is. It shows up as null in the web portal all the time.
 
         # The rest of the list contains hourly data
         hourly_entries = []
