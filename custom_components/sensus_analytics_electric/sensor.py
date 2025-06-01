@@ -38,7 +38,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
 # pylint: disable=too-few-public-methods
 class UsageConversionMixin:
     """Mixin to provide usage conversion."""
-
     # pylint: disable=too-many-return-statements
     # I don't think we need unit conversion for electricity, so I'm commenting out most of it for now.
     def _convert_usage(self, usage, usage_unit=None):
@@ -49,9 +48,9 @@ class UsageConversionMixin:
             usage_unit = self.coordinator.data.get("usageUnit")
         if usage_unit == "KWH":
             usage_unit = "kWh"  # try to set this to the expected unit style.
-
+#
         config_unit_type = self.coordinator.config_entry.data.get("electric_unit_type")
-
+#
         if usage_unit == "kWh" and config_unit_type == "MWh":
             try:
                 return round(float(usage) * 1000)
@@ -62,23 +61,32 @@ class UsageConversionMixin:
                 return round(float(usage) / 1000)
             except (ValueError, TypeError):
                 return None
+        elif usage_unit == "KWH" and config_unit_type == "kWh":
+            try:
+                return usage
+            except (ValueError, TypeError):
+                return None
         return usage
-
+#
     def _get_usage_unit(self):
         """Determine the unit of measurement for usage sensors."""
         usage_unit = self.coordinator.data.get("usageUnit")
         config_unit_type = self.coordinator.config_entry.data.get("unit_type")
-
+#
         if usage_unit == "kWh" and config_unit_type == "MWh":
             return "MWh"
         if usage_unit == "MWh" and config_unit_type == "kWh":
             return "kWh"
+        if usage_unit == "KWH" and config_unit_type == "kWh":
+            return "kWh"
+        if usage_unit == "MWH" and config_unit_type == "MWh":
+            return "MWh"
         return usage_unit
 
 
 class DynamicUnitSensorBase(UsageConversionMixin, CoordinatorEntity, SensorEntity):
     """Base class for sensors with dynamic units."""
-
+#
     def __init__(self, coordinator, entry):
         """Initialize the dynamic unit sensor base."""
         super().__init__(coordinator)
@@ -91,7 +99,7 @@ class DynamicUnitSensorBase(UsageConversionMixin, CoordinatorEntity, SensorEntit
             manufacturer="Unknown",
             model="Electric Utility Meter",
         )
-
+#
     @property
     def native_unit_of_measurement(self):
         """Return the unit of measurement."""
@@ -100,7 +108,7 @@ class DynamicUnitSensorBase(UsageConversionMixin, CoordinatorEntity, SensorEntit
 
 class StaticUnitSensorBase(UsageConversionMixin, CoordinatorEntity, SensorEntity):
     """Base class for sensors with static units."""
-
+#
     def __init__(self, coordinator, entry, unit=None, device_class=None):
         """Initialize the static unit sensor base."""
         super().__init__(coordinator)
@@ -121,7 +129,7 @@ class StaticUnitSensorBase(UsageConversionMixin, CoordinatorEntity, SensorEntity
 
 class SensusAnalyticsDailyUsageSensor(DynamicUnitSensorBase):
     """Representation of the daily usage sensor."""
-
+#
     def __init__(self, coordinator, entry):
         """Initialize the daily usage sensor."""
         super().__init__(coordinator, entry)
@@ -130,12 +138,12 @@ class SensusAnalyticsDailyUsageSensor(DynamicUnitSensorBase):
         self._attr_icon = "mdi:meter-electric-outline"
         self._attr_device_class = SensorDeviceClass.ENERGY
         self._attr_state_class = SensorStateClass.TOTAL
-
+#
     @property
     def last_reset(self):
         """Return the last reset time for the daily usage sensor."""
         return dt_util.start_of_local_day()
-
+#
     @property
     def native_value(self):
         """Return the state of the sensor."""
@@ -145,32 +153,32 @@ class SensusAnalyticsDailyUsageSensor(DynamicUnitSensorBase):
 
 class SensusAnalyticsUsageUnitSensor(StaticUnitSensorBase):
     """Representation of the usage unit sensor."""
-
+#
     def __init__(self, coordinator, entry):
         """Initialize the usage unit sensor."""
         super().__init__(coordinator, entry, unit=None)
         self._attr_name = f"{DEFAULT_NAME} Native Usage Unit"
         self._attr_unique_id = f"{self._unique_id}_usage_unit"
-
+#
     @property
     def native_value(self):
         """Return the state of the sensor."""
         unit = self.coordinator.data.get("usageUnit")
-        if unit == "KWH":
-            unit = "kWh"
+        #if unit == "KWH":
+        #    unit = "kWh"
         return unit
 
 
 class SensusAnalyticsMeterAddressSensor(StaticUnitSensorBase):
     """Representation of the meter address sensor."""
-
+#
     def __init__(self, coordinator, entry):
         """Initialize the meter address sensor."""
         super().__init__(coordinator, entry, unit=None)
         self._attr_name = f"{DEFAULT_NAME} Meter Address"
         self._attr_unique_id = f"{self._unique_id}_meter_address"
         self._attr_icon = "mdi:map-marker"
-
+#
     @property
     def native_value(self):
         """Return the state of the sensor."""
@@ -179,7 +187,7 @@ class SensusAnalyticsMeterAddressSensor(StaticUnitSensorBase):
 
 class SensusAnalyticsLastReadSensor(StaticUnitSensorBase):
     """Representation of the last read timestamp sensor."""
-
+#
     def __init__(self, coordinator, entry):
         """Initialize the last read sensor."""
         super().__init__(
@@ -191,7 +199,7 @@ class SensusAnalyticsLastReadSensor(StaticUnitSensorBase):
         self._attr_name = f"{DEFAULT_NAME} Last Read"
         self._attr_unique_id = f"{self._unique_id}_last_read"
         self._attr_icon = "mdi:clock-time-nine"
-
+#
     @property
     def native_value(self):
         """Return the state of the sensor."""
@@ -207,14 +215,14 @@ class SensusAnalyticsLastReadSensor(StaticUnitSensorBase):
 
 class SensusAnalyticsMeterLongitudeSensor(StaticUnitSensorBase):
     """Representation of the meter longitude sensor."""
-
+#
     def __init__(self, coordinator, entry):
         """Initialize the meter longitude sensor."""
         super().__init__(coordinator, entry, unit="°")
         self._attr_name = f"{DEFAULT_NAME} Meter Longitude"
         self._attr_unique_id = f"{self._unique_id}_meter_longitude"
         self._attr_icon = "mdi:longitude"
-
+#
     @property
     def native_value(self):
         """Return the state of the sensor."""
@@ -223,14 +231,14 @@ class SensusAnalyticsMeterLongitudeSensor(StaticUnitSensorBase):
 
 class SensusAnalyticsMeterIdSensor(StaticUnitSensorBase):
     """Representation of the meter ID sensor."""
-
+#
     def __init__(self, coordinator, entry):
         """Initialize the meter ID sensor."""
         super().__init__(coordinator, entry, unit=None)
         self._attr_name = f"{DEFAULT_NAME} Meter ID"
         self._attr_unique_id = f"{self._unique_id}_meter_id"
         self._attr_icon = "mdi:account"
-
+#
     @property
     def native_value(self):
         """Return the state of the sensor."""
@@ -239,14 +247,14 @@ class SensusAnalyticsMeterIdSensor(StaticUnitSensorBase):
 
 class SensusAnalyticsMeterLatitudeSensor(StaticUnitSensorBase):
     """Representation of the meter latitude sensor."""
-
+#
     def __init__(self, coordinator, entry):
         """Initialize the meter latitude sensor."""
         super().__init__(coordinator, entry, unit="°")
         self._attr_name = f"{DEFAULT_NAME} Meter Latitude"
         self._attr_unique_id = f"{self._unique_id}_meter_latitude"
         self._attr_icon = "mdi:latitude"
-
+#
     @property
     def native_value(self):
         """Return the state of the sensor."""
@@ -255,7 +263,7 @@ class SensusAnalyticsMeterLatitudeSensor(StaticUnitSensorBase):
 
 class MeterOdometerSensor(DynamicUnitSensorBase):
     """Representation of the meter odometer sensor (previously latest read usage)."""
-
+#
     def __init__(self, coordinator, entry):
         """Initialize the meter odometer sensor."""
         super().__init__(coordinator, entry)
@@ -264,12 +272,12 @@ class MeterOdometerSensor(DynamicUnitSensorBase):
         self._attr_icon = "mdi:meter-electric-outline"
         self._attr_device_class = SensorDeviceClass.ENERGY
         self._attr_state_class = SensorStateClass.TOTAL_INCREASING
-
+#
     @property
     def last_reset(self):
         """Return the last reset time for the meter odometer sensor."""
         return None  # Odometer typically does not reset
-
+#
     @property
     def native_value(self):
         """Return the state of the sensor."""
@@ -279,7 +287,7 @@ class MeterOdometerSensor(DynamicUnitSensorBase):
 
 class SensusAnalyticsBillingUsageSensor(DynamicUnitSensorBase):
     """Representation of the billing usage sensor."""
-
+#
     def __init__(self, coordinator, entry):
         """Initialize the billing usage sensor."""
         super().__init__(coordinator, entry)
@@ -288,14 +296,14 @@ class SensusAnalyticsBillingUsageSensor(DynamicUnitSensorBase):
         self._attr_icon = "mdi:meter-electric-outline"
         self._attr_device_class = SensorDeviceClass.ENERGY
         self._attr_state_class = SensorStateClass.TOTAL
-
+#
     @property
     def last_reset(self):
         """Return the last reset time for the billing usage sensor."""
         local_tz = dt_util.get_time_zone(self.hass.config.time_zone)
         now = datetime.now(local_tz)
         return now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-
+#
     @property
     def native_value(self):
         """Return the state of the sensor."""
@@ -305,14 +313,14 @@ class SensusAnalyticsBillingUsageSensor(DynamicUnitSensorBase):
 
 class SensusAnalyticsBillingCostSensor(StaticUnitSensorBase):
     """Representation of the billing cost sensor."""
-
+#
     def __init__(self, coordinator, entry, currency):
         """Initialize the billing cost sensor."""
         super().__init__(coordinator, entry, unit=currency)
         self._attr_name = f"{DEFAULT_NAME} Billing Cost"
         self._attr_unique_id = f"{self._unique_id}_billing_cost"
         self._attr_icon = "mdi:currency-usd"
-
+#
     @property
     def native_value(self):
         """Return the state of the sensor."""
@@ -321,13 +329,13 @@ class SensusAnalyticsBillingCostSensor(StaticUnitSensorBase):
             return None
         usage_electric = self._convert_usage(usage)
         return self._calculate_electric_cost(usage_electric)
-
+#
     def _calculate_electric_cost(self, usage_electric):
         """Calculate the billing cost based on tiers and service fee."""
         electric_commodity_price = self.coordinator.config_entry.data.get("electric_commodity_price")
         # electric_solar_credit_price = self.coordinator.config_entry.data.get("electric_solar_credit_price") or 0
         electric_service_fee = self.coordinator.config_entry.data.get("electric_service_fee")
-
+#
         cost = electric_service_fee
         if usage_electric is not None:
             cost += usage_electric * (electric_commodity_price)
@@ -336,14 +344,14 @@ class SensusAnalyticsBillingCostSensor(StaticUnitSensorBase):
 
 class SensusAnalyticsDailyFeeSensor(StaticUnitSensorBase):
     """Representation of the daily fee sensor."""
-
+#
     def __init__(self, coordinator, entry, currency):
         """Initialize the daily fee sensor."""
         super().__init__(coordinator, entry, unit=currency)
         self._attr_name = f"{DEFAULT_NAME} Daily Fee"
         self._attr_unique_id = f"{self._unique_id}_daily_fee"
         self._attr_icon = "mdi:currency-usd"
-
+#
     @property
     def native_value(self):
         """Return the state of the sensor."""
@@ -352,7 +360,7 @@ class SensusAnalyticsDailyFeeSensor(StaticUnitSensorBase):
             return None
         usage_electric = self._convert_usage(usage)
         return self._calculate_daily_electric_fee(usage_electric)
-
+#
     def _calculate_daily_electric_fee(self, usage_electric):
         """Calculate the daily fee."""
         cost = 0
@@ -364,7 +372,7 @@ class SensusAnalyticsDailyFeeSensor(StaticUnitSensorBase):
 
 class LastHourUsageSensor(DynamicUnitSensorBase):
     """Representation of the last hour usage sensor."""
-
+#
     def __init__(self, coordinator, entry):
         """Initialize the last hour usage sensor."""
         super().__init__(coordinator, entry)
@@ -373,14 +381,14 @@ class LastHourUsageSensor(DynamicUnitSensorBase):
         self._attr_icon = "mdi:meter-electric-outline"
         self._attr_device_class = SensorDeviceClass.ENERGY
         self._attr_state_class = SensorStateClass.TOTAL
-
+#
     @property
     def last_reset(self):
         """Return the last reset time for the last hour usage sensor."""
         local_tz = dt_util.get_time_zone(self.hass.config.time_zone)
         now = datetime.now(local_tz)
         return now.replace(minute=0, second=0, microsecond=0) - timedelta(hours=1)
-
+#
     @property
     def native_value(self):
         """Return the usage for the current hour from the previous day."""
@@ -390,7 +398,7 @@ class LastHourUsageSensor(DynamicUnitSensorBase):
         hourly_data = self.coordinator.data.get("hourly_usage_data", [])
         if not hourly_data:
             return None
-
+#
         # Find the data corresponding to target_hour from the previous day
         for entry in hourly_data:
             entry_time = dt_util.utc_from_timestamp(entry["timestamp"] / 1000).astimezone(local_tz)
@@ -403,14 +411,14 @@ class LastHourUsageSensor(DynamicUnitSensorBase):
 
 class LastHourTemperatureSensor(StaticUnitSensorBase):
     """Representation of the last hour temperature sensor."""
-
+#
     def __init__(self, coordinator, entry):
         """Initialize the last hour temperature sensor."""
         super().__init__(coordinator, entry, unit="°F")
         self._attr_name = f"{DEFAULT_NAME} Last Hour Temperature"
         self._attr_unique_id = f"{self._unique_id}_last_hour_temperature"
         self._attr_icon = "mdi:thermometer"
-
+#
     @property
     def native_value(self):
         """Return the temperature for the current hour from the previous day."""
@@ -420,7 +428,7 @@ class LastHourTemperatureSensor(StaticUnitSensorBase):
         hourly_data = self.coordinator.data.get("hourly_usage_data", [])
         if not hourly_data:
             return None
-
+#
         for entry in hourly_data:
             entry_time = dt_util.utc_from_timestamp(entry["timestamp"] / 1000).astimezone(local_tz)
             if entry_time.hour == target_hour:
@@ -431,14 +439,14 @@ class LastHourTemperatureSensor(StaticUnitSensorBase):
 
 class LastHourTimestampSensor(StaticUnitSensorBase):
     """Representation of the last hour timestamp sensor."""
-
+#
     def __init__(self, coordinator, entry):
         """Initialize the last hour timestamp sensor."""
         super().__init__(coordinator, entry, unit=None)
         self._attr_name = f"{DEFAULT_NAME} Last Hour Timestamp"
         self._attr_unique_id = f"{self._unique_id}_last_hour_timestamp"
         self._attr_icon = "mdi:clock-time-nine"
-
+#
     @property
     def native_value(self):
         """Return the timestamp for the current hour's data from the previous day."""
@@ -448,7 +456,7 @@ class LastHourTimestampSensor(StaticUnitSensorBase):
         hourly_data = self.coordinator.data.get("hourly_usage_data", [])
         if not hourly_data:
             return None
-
+#
         for entry in hourly_data:
             entry_timestamp_ms = entry["timestamp"]
             entry_time = dt_util.utc_from_timestamp(entry_timestamp_ms / 1000).astimezone(local_tz)
