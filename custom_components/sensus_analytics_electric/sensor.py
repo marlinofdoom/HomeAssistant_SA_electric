@@ -71,7 +71,7 @@ class UsageConversionMixin:
     def _get_usage_unit(self):
         """Determine the unit of measurement for usage sensors."""
         usage_unit = self.coordinator.data.get("usageUnit")
-        config_unit_type = self.coordinator.config_entry.data.get("unit_type")
+        config_unit_type = self.coordinator.config_entry.data.get("electric_unit_type")
 #
         if usage_unit == "kWh" and config_unit_type == "MWh":
             return "MWh"
@@ -164,8 +164,6 @@ class SensusAnalyticsUsageUnitSensor(StaticUnitSensorBase):
     def native_value(self):
         """Return the state of the sensor."""
         unit = self.coordinator.data.get("usageUnit")
-        #if unit == "KWH":
-        #    unit = "kWh"
         return unit
 
 
