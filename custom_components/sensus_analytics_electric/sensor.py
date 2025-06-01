@@ -68,7 +68,7 @@ class UsageConversionMixin:
         """Determine the unit of measurement for usage sensors."""
         usage_unit = self.coordinator.data.get("usageUnit")
         config_unit_type = self.coordinator.config_entry.data.get("electric_unit_type")
-    
+
         if usage_unit == "kWh" and config_unit_type == "MWh":
             return "MWh"
         if usage_unit == "MWh" and config_unit_type == "kWh":

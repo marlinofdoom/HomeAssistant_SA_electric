@@ -124,7 +124,7 @@ class SensusAnalyticsDataUpdateCoordinator(DataUpdateCoordinator):
             response.raise_for_status()
             hourly_data = response.json()
             _LOGGER.debug("Hourly data response: %s", hourly_data)
-    
+
             # Validate and process the response
             hourly_entries = self._process_hourly_data_response(hourly_data)
             return hourly_entries
@@ -182,7 +182,7 @@ class SensusAnalyticsDataUpdateCoordinator(DataUpdateCoordinator):
         units = usage_list[0]  # ["KWH", "FAHRENHEIT", "KWH"]
         usage_unit = units[0]
         if usage_unit == "KWH":
-            usage_unit = "kWh"  #trying to trick this into being the correct unit.
+            usage_unit = "kWh"  # trying to trick this into being the correct unit.
 
         temp_unit = units[1]  # probably don't need this
         # Note: No idea what the third entry is. It shows up as null in the web portal all the time. Maybe just units again?
