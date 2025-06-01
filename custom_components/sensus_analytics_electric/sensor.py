@@ -74,8 +74,13 @@ class UsageConversionMixin:
         """Determine the unit of measurement for usage sensors."""
         usage_unit = self.coordinator.data.get("usageUnit")
 <<<<<<< HEAD
+<<<<<<< HEAD
         config_unit_type = self.coordinator.config_entry.data.get("electric_unit_type")
 #
+=======
+        config_unit_type = self.coordinator.config_entry.data.get("unit_type")
+        #
+>>>>>>> 0ad90609f00e6b1143abadb617038c33be305696
 =======
         config_unit_type = self.coordinator.config_entry.data.get("unit_type")
         #
@@ -180,7 +185,10 @@ class SensusAnalyticsUsageUnitSensor(StaticUnitSensorBase):
         """Return the state of the sensor."""
         unit = self.coordinator.data.get("usageUnit")
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 0ad90609f00e6b1143abadb617038c33be305696
         # if unit == "KWH":
         #    unit = "kWh"
 >>>>>>> 0ad90609f00e6b1143abadb617038c33be305696
