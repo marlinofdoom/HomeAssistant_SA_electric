@@ -75,7 +75,9 @@ class UsageConversionMixin:
         usage_unit = self.coordinator.data.get("usageUnit")
         if usage_unit == "KWH":
             usage_unit = "kWh"  # try to set this to the expected unit style.
-        config_unit_type = self.coordinator.config_entry.data.get("unit_type")  #this doesn't work if we use electric_unit_type for some reason
+        config_unit_type = self.coordinator.config_entry.data.get(
+            "unit_type"
+        )  # this doesn't work if we use electric_unit_type for some reason
         #
         if usage_unit == "kWh" and config_unit_type == "MWh":
             return "MWh"
