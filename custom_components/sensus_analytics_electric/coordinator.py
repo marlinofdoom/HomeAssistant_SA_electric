@@ -41,16 +41,15 @@ class SensusAnalyticsDataUpdateCoordinator(DataUpdateCoordinator):
         _LOGGER.debug("Async update of data started")
         return await self.hass.async_add_executor_job(self._fetch_data)
 
-    #
     def _fetch_data(self):
         """Fetch data from the Sensus Analytics API."""
         _LOGGER.debug("Starting data fetch from Sensus Analytics API")
         try:
             session = self._create_authenticated_session()
-            #
+
             # Fetch daily data
             data = self._fetch_daily_electric_data(session)
-            #
+
             # Fetch hourly data
             _LOGGER.debug("Fetching hourly data")
             local_tz = dt_util.get_time_zone(self.hass.config.time_zone)
@@ -61,16 +60,15 @@ class SensusAnalyticsDataUpdateCoordinator(DataUpdateCoordinator):
                 data["hourly_usage_data"] = hourly_data
             else:
                 _LOGGER.warning("Failed to fetch hourly data")
-            #
+
             return data
-        #
+
         except UpdateFailed as error:
             raise error
         except Exception as error:
             _LOGGER.error("Unexpected error: %s", error)
             raise UpdateFailed(f"Unexpected error: {error}") from error
 
-    #
     def _create_authenticated_session(self):
         """Create and return an authenticated session."""
         session = requests.Session()
@@ -87,11 +85,10 @@ class SensusAnalyticsDataUpdateCoordinator(DataUpdateCoordinator):
         if r_sec.status_code != 302:
             _LOGGER.error("Authentication failed with status code %s", r_sec.status_code)
             raise UpdateFailed("Authentication failed")
-        #
+
         _LOGGER.debug("Authentication successful")
         return session
 
-    #
     def _fetch_daily_electric_data(self, session):
         """Fetch daily electric meter data."""
         widget_url = urljoin(self.base_url, "electric/widget/byPage")
@@ -113,26 +110,25 @@ class SensusAnalyticsDataUpdateCoordinator(DataUpdateCoordinator):
         _LOGGER.debug("Parsed data: %s", data)
         return data
 
-    #
     def _retrieve_hourly_data(self, session: requests.Session, target_date: datetime):
         """Retrieve hourly usage data for a specific date based on local time."""
         # Prepare request parameters
         start_ts, end_ts = self._get_start_end_timestamps(target_date)
         usage_url, params = self._construct_hourly_data_request(start_ts, end_ts)
-        #
+
         _LOGGER.debug("Hourly data request URL: %s", usage_url)
         _LOGGER.debug("Hourly data request parameters: %s", params)
-        #
+
         try:
             response = session.get(usage_url, params=params, timeout=10)
             response.raise_for_status()
             hourly_data = response.json()
             _LOGGER.debug("Hourly data response: %s", hourly_data)
-            #
+    
             # Validate and process the response
             hourly_entries = self._process_hourly_data_response(hourly_data)
             return hourly_entries
-        #
+
         except requests.exceptions.RequestException as e:
             _LOGGER.error("Hourly data retrieval failed: %s", e)
             return None
@@ -140,22 +136,20 @@ class SensusAnalyticsDataUpdateCoordinator(DataUpdateCoordinator):
             _LOGGER.error("Error processing the hourly data response: %s", e)
             return None
 
-    #
     def _get_start_end_timestamps(self, target_date):
         """Get start and end timestamps in milliseconds for the target date."""
         # Use HA's local timezone
         local_tz = dt_util.get_time_zone(self.hass.config.time_zone)
-        #
+
         # Start and end of the day in local time with timezone
         start_dt = datetime.combine(target_date, datetime.min.time(), tzinfo=local_tz)
         end_dt = datetime.combine(target_date, datetime.max.time(), tzinfo=local_tz)
-        #
+
         # Convert to timestamps in milliseconds
         start_ts = int(start_dt.timestamp() * 1000)
         end_ts = int(end_dt.timestamp() * 1000)
         return start_ts, end_ts
 
-    #
     def _construct_hourly_data_request(self, start_ts, end_ts):
         """Construct the hourly data request URL and parameters."""
         usage_url = urljoin(self.base_url, f"electric/usage/{self.account_number}/{self.electric_meter_number}")
@@ -168,33 +162,35 @@ class SensusAnalyticsDataUpdateCoordinator(DataUpdateCoordinator):
         }
         return usage_url, params
 
-    #
     def _process_hourly_data_response(self, hourly_data):
         """Process and structure the hourly data response."""
         if not isinstance(hourly_data, dict):
             _LOGGER.error("Unexpected response format for hourly data.")
             return None
-        #
+
         if not hourly_data.get("operationSuccess", False):
             errors = hourly_data.get("errors", [])
             _LOGGER.error("API returned errors: %s", errors)
             return None
-        #
+
         usage_list = hourly_data.get("data", {}).get("usage", [])
         if not usage_list or len(usage_list) < 2:
             _LOGGER.error("Hourly usage data is missing or incomplete.")
             return None
-        #
+
         # The first element contains units
         units = usage_list[0]  # ["KWH", "FAHRENHEIT", "KWH"]
         usage_unit = units[0]
+        if usage_unit == "KWH":
+            usage_unit = "kWh"  #trying to trick this into being the correct unit.
+
         temp_unit = units[1]  # probably don't need this
         # Note: No idea what the third entry is. It shows up as null in the web portal all the time. Maybe just units again?
-        #
+
         # The rest of the list contains hourly data
         hourly_entries = []
         for entry in usage_list[1:]:
-            timestamp, usage, temp = entry[:3]  # FIX don't need rain
+            timestamp, usage, temp = entry[:3]
             hourly_entries.append(
                 {
                     "timestamp": timestamp,
